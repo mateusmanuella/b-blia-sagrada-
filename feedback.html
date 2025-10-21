@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Feedback - Conheça a Bíblia</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+  <style>
+    main{max-width:1200px;margin:28px auto;padding:18px}
+    .question{margin-bottom:10px}
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Navegação principal">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">Bíblia Sagrada</a>
+    <div class="d-flex align-items-center ms-3">
+      <button id="themeToggle" class="theme-toggle" aria-pressed="false" title="Alternar tema (luz/escuro)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"></path>
+        </svg>
+        <span class="sr-only">Alternar tema</span>
+      </button>
+    </div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html#home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#informacoes">Informações</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#galeria">Galeria</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#midia">Mídia / Mapa</a></li>
+        <li class="nav-item"><a class="nav-link" href="versiculos.html">Versículos</a></li>
+        <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="site-shell" aria-label="Conteúdo do site">
+  <main>
+    <h1 class="mb-3">Feedback sobre o site</h1>
+    <p>Por favor responda ao questionário abaixo. Suas respostas serão registradas para que o administrador possa revisar.</p>
+    <form id="feedback-form">
+      <div id="questions"></div>
+
+      <div class="mb-3">
+        <label for="freeText" class="form-label">Resposta em suas próprias palavras (opcional)</label>
+        <textarea id="freeText" rows="5" class="form-control" placeholder="Escreva sua opinião..."></textarea>
+      </div>
+      <div class="mb-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Enviar feedback</button>
+        <button id="clear-form" type="button" class="btn btn-outline-secondary">Limpar</button>
+      </div>
+    </form>
+
+    <hr>
+    <h3>Configurações do administrador</h3>
+    <div class="mb-3">
+      <label for="external-endpoint" class="form-label">Endpoint externo para envio (opcional)</label>
+      <input id="external-endpoint" class="form-control" placeholder="https://formspree.io/f/XXXXX" />
+      <div class="mt-2">
+        <button id="save-endpoint" class="btn btn-sm btn-outline-secondary">Salvar endpoint</button>
+        <small class="text-muted ms-2">Deixe vazio para usar apenas armazenamento local.</small>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <p>Área administrativa completa: <a href="feedback-admin.html" class="btn btn-sm btn-outline-primary">Abrir painel administrativo</a></p>
+    </div>
+  </main>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/feedback.js"></script>
+</body>
+</html>
