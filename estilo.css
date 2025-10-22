@@ -1224,3 +1224,49 @@ footer {
 @media (max-width: 768px) {
   /* Priorizar cache de recursos móveis */
 }
+
+/* Critical CSS Inline (para as primeiras 14KB) */
+.critical-css {
+  /* Conteúdo crítico já está no estilo principal */
+}
+
+/* Service Worker Enhanced */
+@media (max-width: 768px) {
+  /* Priorizar cache de recursos móveis */
+}
+
+/* ESTILOS PARA O SISTEMA DE BUSCA FUNCIONAL */
+.search-highlight {
+    outline: 3px solid var(--accent) !important;
+    box-shadow: 0 0 20px rgba(249, 211, 66, 0.6) !important;
+    transform: scale(1.02) !important;
+    transition: all 0.3s ease !important;
+    z-index: 10 !important;
+    position: relative !important;
+    animation: pulse-highlight 2s infinite !important;
+}
+
+@keyframes pulse-highlight {
+    0% { 
+        box-shadow: 0 0 10px rgba(249, 211, 66, 0.4); 
+        transform: scale(1.02);
+    }
+    50% { 
+        box-shadow: 0 0 25px rgba(249, 211, 66, 0.8); 
+        transform: scale(1.03);
+    }
+    100% { 
+        box-shadow: 0 0 10px rgba(249, 211, 66, 0.4); 
+        transform: scale(1.02);
+    }
+}
+
+#search-count {
+    font-weight: bold;
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+

@@ -1,4 +1,4 @@
-// search.js - Sistema de busca avançada para a Bíblia (VERSÃO CORRIGIDA)
+// search.js - Sistema de busca funcional para a Bíblia
 class BibleSearch {
     constructor() {
         this.verses = this.loadBibleData();
@@ -9,423 +9,355 @@ class BibleSearch {
     }
 
     init() {
-        // Verificar se já existe uma busca para não duplicar
-        if (document.getElementById('bible-search-advanced')) {
-            return;
-        }
-        this.setupSearchInterface();
         this.setupSearchHandlers();
+        console.log('🔍 Sistema de busca bíblica inicializado!');
     }
 
-    // ... (mantenha os métodos loadBibleData, loadBooksData, etc. iguais)
-
-    setupSearchInterface() {
-        // Substituir a busca existente pela avançada
-        const existingSearch = document.getElementById('site-search');
-        if (existingSearch) {
-            existingSearch.innerHTML = this.getSearchHTML();
-            this.injectSearchCSS();
-        }
+    loadBibleData() {
+        return [
+            {
+                book: "Gênesis",
+                chapter: 1,
+                verse: 1,
+                text: "No princípio, Deus criou os céus e a terra.",
+                version: "NVI"
+            },
+            {
+                book: "João",
+                chapter: 3,
+                verse: 16,
+                text: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.",
+                version: "NVI"
+            },
+            {
+                book: "Salmos",
+                chapter: 23,
+                verse: 1,
+                text: "O Senhor é o meu pastor; de nada terei falta.",
+                version: "NVI"
+            },
+            {
+                book: "Filipenses",
+                chapter: 4,
+                verse: 13,
+                text: "Tudo posso naquele que me fortalece.",
+                version: "NVI"
+            },
+            {
+                book: "Jeremias",
+                chapter: 29,
+                verse: 11,
+                text: "Porque eu sei os planos que tenho para vocês', declara o Senhor, 'planos de prosperá-los e não de causar dano, planos de dar-lhes esperança e um futuro.",
+                version: "NVI"
+            },
+            {
+                book: "Romanos",
+                chapter: 8,
+                verse: 28,
+                text: "Sabemos que Deus age em todas as coisas para o bem daqueles que o amam, dos que foram chamados de acordo com o seu propósito.",
+                version: "NVI"
+            },
+            {
+                book: "Isaías",
+                chapter: 41,
+                verse: 10,
+                text: "Não temas, porque eu sou contigo; não te assombres, porque eu sou o teu Deus; eu te fortaleço, e te ajudo, e te sustento com a destra da minha justiça.",
+                version: "ARA"
+            },
+            {
+                book: "Mateus",
+                chapter: 11,
+                verse: 28,
+                text: "Venham a mim, todos os que estão cansados e sobrecarregados, e eu lhes darei descanso.",
+                version: "NVI"
+            },
+            {
+                book: "Provérbios",
+                chapter: 3,
+                verse: 5,
+                text: "Confie no Senhor de todo o seu coração e não se apoie em seu próprio entendimento;",
+                version: "NVI"
+            },
+            {
+                book: "2 Coríntios",
+                chapter: 5,
+                verse: 17,
+                text: "Portanto, se alguém está em Cristo, é nova criação. As coisas antigas já passaram; eis que surgiram coisas novas!",
+                version: "NVI"
+            }
+        ];
     }
 
-    getSearchHTML() {
-        return `
-            <div class="search-wrapper position-relative">
-                <div class="input-group input-group-sm">
-                    <input type="text" id="bible-search" class="form-control" 
-                           placeholder="Buscar versículos, livros, temas..." 
-                           aria-label="Busca bíblica">
-                    <button class="btn btn-outline-light" type="button" id="search-options-btn">
-                        <i class="fas fa-sliders-h"></i>
-                    </button>
-                </div>
-                
-                <div id="search-options" class="search-options-card card position-absolute mt-1 d-none">
-                    <div class="card-body p-3">
-                        <div class="option-group mb-3">
-                            <label class="form-label small fw-bold">Buscar em:</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="opt-verses" checked>
-                                <label class="form-check-label small" for="opt-verses">Versículos</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="opt-books" checked>
-                                <label class="form-check-label small" for="opt-books">Livros</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="opt-characters" checked>
-                                <label class="form-check-label small" for="opt-characters">Personagens</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="opt-themes" checked>
-                                <label class="form-check-label small" for="opt-themes">Temas</label>
-                            </div>
-                        </div>
-                        <div class="option-group">
-                            <label class="form-label small fw-bold">Testamento:</label>
-                            <select id="testament-filter" class="form-select form-select-sm">
-                                <option value="all">Todos</option>
-                                <option value="AT">Antigo Testamento</option>
-                                <option value="NT">Novo Testamento</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="search-results" class="search-results-container position-absolute mt-1 w-100 d-none"></div>
-            </div>
-        `;
+    loadBooksData() {
+        return [
+            { name: "Gênesis", testament: "AT", chapters: 50, theme: "Criação, Patriarcas" },
+            { name: "Êxodo", testament: "AT", chapters: 40, theme: "Libertação, Lei" },
+            { name: "Salmos", testament: "AT", chapters: 150, theme: "Louvor, Oração" },
+            { name: "Isaías", testament: "AT", chapters: 66, theme: "Profecia, Messias" },
+            { name: "Mateus", testament: "NT", chapters: 28, theme: "Evangelho, Reino" },
+            { name: "João", testament: "NT", chapters: 21, theme: "Evangelho, Vida" },
+            { name: "Romanos", testament: "NT", chapters: 16, theme: "Doutrina, Graça" },
+            { name: "Apocalipse", testament: "NT", chapters: 22, theme: "Profecia, Fim" }
+        ];
     }
 
-    injectSearchCSS() {
-        if (document.getElementById('search-css')) return;
+    loadCharactersData() {
+        return [
+            { name: "Jesus", role: "Filho de Deus", books: ["Mateus", "Marcos", "Lucas", "João"] },
+            { name: "Moisés", role: "Líder, Profeta", books: ["Êxodo", "Levítico", "Números", "Deuteronômio"] },
+            { name: "Davi", role: "Rei, Salmista", books: ["1 Samuel", "2 Samuel", "Salmos"] },
+            { name: "Paulo", role: "Apóstolo", books: ["Romanos", "1 Coríntios", "2 Coríntios", "Gálatas"] },
+            { name: "Maria", role: "Mãe de Jesus", books: ["Mateus", "Lucas", "João"] },
+            { name: "Pedro", role: "Apóstolo", books: ["Mateus", "Marcos", "Lucas", "João", "Atos"] }
+        ];
+    }
 
-        const css = `
-            <style id="search-css">
-            .search-wrapper {
-                position: relative;
-                min-width: 250px;
-            }
-            
-            .search-options-card {
-                background: white;
-                border: 1px solid #dee2e6;
-                border-radius: 0.375rem;
-                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-                z-index: 1000;
-                min-width: 280px;
-            }
-            
-            .search-results-container {
-                background: white;
-                border: 1px solid #dee2e6;
-                border-radius: 0.375rem;
-                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-                max-height: 400px;
-                overflow-y: auto;
-                z-index: 1000;
-            }
-            
-            .search-result-item {
-                padding: 0.75rem;
-                border-bottom: 1px solid #f8f9fa;
-                cursor: pointer;
-                transition: background-color 0.15s ease;
-            }
-            
-            .search-result-item:hover {
-                background-color: #f8f9fa;
-            }
-            
-            .search-result-item:last-child {
-                border-bottom: none;
-            }
-            
-            .verse-reference {
-                display: flex;
-                justify-content: between;
-                align-items: center;
-                margin-bottom: 0.25rem;
-            }
-            
-            .version-badge {
-                background: #6c757d;
-                color: white;
-                padding: 0.125rem 0.375rem;
-                border-radius: 0.25rem;
-                font-size: 0.75rem;
-                margin-left: auto;
-            }
-            
-            .testament-badge {
-                background: #198754;
-                color: white;
-                padding: 0.125rem 0.375rem;
-                border-radius: 0.25rem;
-                font-size: 0.75rem;
-                margin-left: auto;
-            }
-            
-            .role-badge {
-                background: #0d6efd;
-                color: white;
-                padding: 0.125rem 0.375rem;
-                border-radius: 0.25rem;
-                font-size: 0.75rem;
-                margin-left: auto;
-            }
-            
-            .verse-text {
-                font-size: 0.875rem;
-                color: #495057;
-                line-height: 1.4;
-            }
-            
-            .book-info, .character-books, .theme-verses {
-                font-size: 0.75rem;
-                color: #6c757d;
-            }
-            
-            .search-highlight {
-                background-color: #fff3cd;
-                padding: 0.125rem 0.25rem;
-                border-radius: 0.25rem;
-            }
-            
-            .results-section {
-                border-bottom: 1px solid #dee2e6;
-                padding: 0.75rem;
-            }
-            
-            .results-section:last-child {
-                border-bottom: none;
-            }
-            
-            .results-section h6 {
-                color: #495057;
-                margin-bottom: 0.5rem;
-                font-size: 0.875rem;
-                font-weight: 600;
-            }
-            
-            .search-results-header {
-                padding: 0.75rem;
-                border-bottom: 1px solid #dee2e6;
-                background: #f8f9fa;
-            }
-            
-            .search-no-results {
-                padding: 1.5rem;
-                text-align: center;
-                color: #6c757d;
-            }
-            
-            .quick-filters {
-                padding: 0.75rem;
-                border-bottom: 1px solid #dee2e6;
-                background: #f8f9fa;
-            }
-            
-            .quick-filters-title {
-                font-size: 0.875rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                color: #495057;
-            }
-            
-            .quick-filters-buttons {
-                display: flex;
-                gap: 0.5rem;
-                flex-wrap: wrap;
-            }
-            
-            .quick-filter-btn {
-                font-size: 0.75rem;
-                padding: 0.25rem 0.5rem;
-            }
-            </style>
-        `;
-        
-        document.head.insertAdjacentHTML('beforeend', css);
+    loadThemesData() {
+        return [
+            { theme: "Amor", verses: ["João 3:16", "1 Coríntios 13", "1 João 4:8"] },
+            { theme: "Fé", verses: ["Hebreus 11:1", "Romanos 10:17", "Efésios 2:8"] },
+            { theme: "Esperança", verses: ["Jeremias 29:11", "Romanos 15:13", "1 Pedro 1:3"] },
+            { theme: "Salvação", verses: ["Efésios 2:8-9", "Romanos 10:9", "João 14:6"] },
+            { theme: "Oração", verses: ["Filipenses 4:6", "1 Tessalonicenses 5:17", "Tiago 5:16"] }
+        ];
     }
 
     setupSearchHandlers() {
-        const searchInput = document.getElementById('bible-search');
-        const optionsBtn = document.getElementById('search-options-btn');
-        const optionsPanel = document.getElementById('search-options');
-        const resultsContainer = document.getElementById('search-results');
+        const searchInput = document.getElementById('gallery-search');
+        const clearBtn = document.getElementById('gallery-clear');
+        const searchCount = document.getElementById('search-count');
 
-        if (!searchInput) return;
-
-        // Busca com debounce
-        const searchHandler = this.debounce((query) => {
-            this.performSearch(query);
-        }, 300);
-
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value;
-            if (query.trim()) {
-                resultsContainer.classList.remove('d-none');
-                searchHandler(query);
-            } else {
-                resultsContainer.classList.add('d-none');
-                this.clearResults();
-            }
-        });
-
-        // Toggle options panel
-        optionsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            optionsPanel.classList.toggle('d-none');
-        });
-
-        // Fechar panels ao clicar fora
-        document.addEventListener('click', () => {
-            optionsPanel.classList.add('d-none');
-            resultsContainer.classList.add('d-none');
-        });
-
-        // Prevenir fechamento ao clicar dentro
-        optionsPanel.addEventListener('click', (e) => e.stopPropagation());
-        resultsContainer.addEventListener('click', (e) => e.stopPropagation());
-
-        // Foco no input quando results estão visíveis
-        searchInput.addEventListener('focus', () => {
-            if (searchInput.value.trim()) {
-                resultsContainer.classList.remove('d-none');
-            }
-        });
-    }
-
-    // ... (mantenha os outros métodos performSearch, searchVerses, etc.)
-
-    displayResults(results, query) {
-        const resultsContainer = document.getElementById('search-results');
-        if (!resultsContainer) return;
-
-        const totalResults = Object.values(results).reduce((sum, arr) => sum + arr.length, 0);
-
-        if (totalResults === 0) {
-            resultsContainer.innerHTML = `
-                <div class="search-no-results">
-                    <p class="mb-1">Nenhum resultado encontrado para "<strong>${query}</strong>"</p>
-                    <small class="text-muted">Tente outros termos ou verifique a ortografia</small>
-                </div>
-            `;
+        if (!searchInput) {
+            console.error('❌ Campo de pesquisa não encontrado!');
             return;
         }
 
-        resultsContainer.innerHTML = `
-            <div class="search-results-header">
-                <h6 class="mb-1">Resultados para "${query}"</h6>
-                <small class="text-muted">${totalResults} resultado(s) encontrado(s)</small>
-            </div>
-            
-            ${results.verses.length > 0 ? `
-                <div class="results-section">
-                    <h6>📖 Versículos (${results.verses.length})</h6>
-                    ${results.verses.map(verse => `
-                        <div class="search-result-item" data-type="verse" data-book="${verse.book}" data-chapter="${verse.chapter}" data-verse="${verse.verse}">
-                            <div class="verse-reference">
-                                <strong>${verse.book} ${verse.chapter}:${verse.verse}</strong>
-                                <span class="version-badge">${verse.version}</span>
-                            </div>
-                            <div class="verse-text">${this.highlightText(verse.text, query)}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            ` : ''}
-            
-            ${results.books.length > 0 ? `
-                <div class="results-section">
-                    <h6>📚 Livros (${results.books.length})</h6>
-                    ${results.books.map(book => `
-                        <div class="search-result-item" data-type="book" data-book="${book.name}">
-                            <div class="book-name">
-                                <strong>${this.highlightText(book.name, query)}</strong>
-                                <span class="testament-badge">${book.testament}</span>
-                            </div>
-                            <div class="book-info">
-                                ${book.chapters} capítulos • ${book.theme}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            ` : ''}
-            
-            ${results.characters.length > 0 ? `
-                <div class="results-section">
-                    <h6>👤 Personagens (${results.characters.length})</h6>
-                    ${results.characters.map(character => `
-                        <div class="search-result-item" data-type="character" data-character="${character.name}">
-                            <div class="character-name">
-                                <strong>${this.highlightText(character.name, query)}</strong>
-                                <span class="role-badge">${character.role}</span>
-                            </div>
-                            <div class="character-books">
-                                Livros: ${character.books.join(', ')}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            ` : ''}
-            
-            ${results.themes.length > 0 ? `
-                <div class="results-section">
-                    <h6>🎯 Temas (${results.themes.length})</h6>
-                    ${results.themes.map(theme => `
-                        <div class="search-result-item" data-type="theme" data-theme="${theme.theme}">
-                            <div class="theme-name">
-                                <strong>${this.highlightText(theme.theme, query)}</strong>
-                            </div>
-                            <div class="theme-verses">
-                                Versículos: ${theme.verses.join(', ')}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            ` : ''}
-        `;
+        // Busca em tempo real
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            this.performSearch(query);
+        });
 
-        // Adicionar event listeners aos resultados
-        this.setupResultInteractions();
+        // Botão limpar
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                this.clearSearch();
+                if (searchCount) searchCount.textContent = '';
+            });
+        }
+
+        // Tecla Enter para buscar
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.performSearch(searchInput.value.trim());
+            }
+        });
+
+        console.log('✅ Handlers de busca configurados!');
     }
 
-    setupResultInteractions() {
-        document.querySelectorAll('.search-result-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const type = item.getAttribute('data-type');
-                this.handleResultClick(item, type);
-            });
+    performSearch(query) {
+        if (!query) {
+            this.clearSearch();
+            return;
+        }
+
+        const results = {
+            verses: this.searchVerses(query),
+            books: this.searchBooks(query),
+            characters: this.searchCharacters(query),
+            themes: this.searchThemes(query)
+        };
+
+        this.highlightResults(results, query);
+        this.updateSearchCount(results, query);
+    }
+
+    searchVerses(query) {
+        return this.verses.filter(verse => {
+            const searchText = `${verse.book} ${verse.text} ${verse.version}`.toLowerCase();
+            return searchText.includes(query.toLowerCase());
         });
     }
 
-    handleResultClick(item, type) {
-        // Fechar resultados
-        document.getElementById('search-results').classList.add('d-none');
-        
-        // Limpar busca
-        document.getElementById('bible-search').value = '';
-        
-        // Mostrar feedback
-        let message = '';
-        switch(type) {
-            case 'verse':
-                const reference = item.querySelector('.verse-reference strong').textContent;
-                message = `Versículo: ${reference}`;
-                break;
-            case 'book':
-                const bookName = item.querySelector('.book-name strong').textContent;
-                message = `Livro: ${bookName}`;
-                break;
-            case 'character':
-                const charName = item.querySelector('.character-name strong').textContent;
-                message = `Personagem: ${charName}`;
-                break;
-            case 'theme':
-                const themeName = item.querySelector('.theme-name strong').textContent;
-                message = `Tema: ${themeName}`;
-                break;
-        }
-        
-        // Usar o sistema de toast existente se disponível
-        if (window.bibleApp && window.bibleApp.showToast) {
-            window.bibleApp.showToast(message, 'info');
-        } else {
-            alert(message); // Fallback simples
+    searchBooks(query) {
+        return this.books.filter(book => {
+            return book.name.toLowerCase().includes(query.toLowerCase()) ||
+                   book.theme.toLowerCase().includes(query.toLowerCase());
+        });
+    }
+
+    searchCharacters(query) {
+        return this.characters.filter(character => {
+            const searchText = `${character.name} ${character.role} ${character.books.join(' ')}`.toLowerCase();
+            return searchText.includes(query.toLowerCase());
+        });
+    }
+
+    searchThemes(query) {
+        return this.themes.filter(theme => {
+            return theme.theme.toLowerCase().includes(query.toLowerCase()) ||
+                   theme.verses.some(verse => verse.toLowerCase().includes(query.toLowerCase()));
+        });
+    }
+
+    highlightResults(results, query) {
+        // Remover highlights anteriores
+        this.clearSearch();
+
+        // Combinar todos os resultados
+        const allResults = [
+            ...results.verses.map(v => ({ type: 'verse', data: v })),
+            ...results.books.map(b => ({ type: 'book', data: b })),
+            ...results.characters.map(c => ({ type: 'character', data: c })),
+            ...results.themes.map(t => ({ type: 'theme', data: t }))
+        ];
+
+        // Encontrar e destacar elementos na página
+        allResults.forEach(result => {
+            this.highlightElement(result, query);
+        });
+
+        // Rolar para o primeiro resultado se houver
+        const firstHighlight = document.querySelector('.search-highlight');
+        if (firstHighlight) {
+            setTimeout(() => {
+                firstHighlight.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 300);
         }
     }
 
-    // ... (mantenha os outros métodos debounce, highlightText, etc.)
+    highlightElement(result, query) {
+        const { type, data } = result;
+        
+        let selector, searchText;
+        
+        switch (type) {
+            case 'verse':
+                selector = `.gallery-card, .info-card, .card`;
+                searchText = data.book.toLowerCase();
+                break;
+            case 'book':
+                selector = `.gallery-card, .info-card, .card`;
+                searchText = data.name.toLowerCase();
+                break;
+            case 'character':
+                selector = `.gallery-card[data-title="${data.name}"], .card h5`;
+                searchText = data.name.toLowerCase();
+                break;
+            case 'theme':
+                selector = `.gallery-card, .info-card`;
+                searchText = data.theme.toLowerCase();
+                break;
+        }
+
+        // Encontrar elementos que correspondem
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            const elementText = element.textContent.toLowerCase();
+            const elementTitle = element.getAttribute('data-title') || 
+                               element.querySelector('h5')?.textContent || 
+                               element.querySelector('.gallery-caption')?.textContent || '';
+            
+            if (elementText.includes(query.toLowerCase()) || 
+                elementTitle.toLowerCase().includes(query.toLowerCase()) ||
+                elementTitle.toLowerCase().includes(searchText)) {
+                
+                element.classList.add('search-highlight');
+                
+                // Adicionar efeito LED para cards
+                if (element.classList.contains('card-led')) {
+                    element.style.setProperty('--led-intensity', '0.8');
+                    element.style.boxShadow = '0 0 25px rgba(249, 211, 66, 0.6)';
+                }
+            }
+        });
+    }
+
+    updateSearchCount(results, query) {
+        const searchCount = document.getElementById('search-count');
+        if (!searchCount) return;
+
+        const totalResults = Object.values(results).reduce((sum, arr) => sum + arr.length, 0);
+        
+        if (totalResults > 0) {
+            searchCount.textContent = `${totalResults} resultado(s) para "${query}"`;
+            searchCount.style.color = 'var(--accent)';
+        } else {
+            searchCount.textContent = `Nenhum resultado para "${query}"`;
+            searchCount.style.color = 'var(--danger)';
+        }
+    }
+
+    clearSearch() {
+        // Remover todos os highlights
+        document.querySelectorAll('.search-highlight').forEach(el => {
+            el.classList.remove('search-highlight');
+            if (el.classList.contains('card-led')) {
+                el.style.setProperty('--led-intensity', '0.3');
+                el.style.boxShadow = '';
+            }
+        });
+
+        // Limpar contador
+        const searchCount = document.getElementById('search-count');
+        if (searchCount) {
+            searchCount.textContent = '';
+        }
+    }
 }
 
-// Inicialização corrigida
+// Inicialização simplificada
 document.addEventListener('DOMContentLoaded', () => {
-    // Aguardar um pouco para garantir que o DOM esteja completamente pronto
     setTimeout(() => {
-        if (document.getElementById('site-search')) {
-            window.bibleSearch = new BibleSearch();
-            console.log('Sistema de busca bíblica inicializado!');
+        window.bibleSearch = new BibleSearch();
+        console.log('✅ Busca bíblica carregada e funcionando!');
+        
+        // Adicionar CSS para os highlights se não existir
+        if (!document.getElementById('search-highlight-css')) {
+            const css = `
+                <style id="search-highlight-css">
+                .search-highlight {
+                    outline: 3px solid var(--accent) !important;
+                    box-shadow: 0 0 20px rgba(249, 211, 66, 0.4) !important;
+                    transform: scale(1.02) !important;
+                    transition: all 0.3s ease !important;
+                    z-index: 10 !important;
+                    position: relative !important;
+                    animation: pulse-highlight 2s infinite !important;
+                }
+                
+                @keyframes pulse-highlight {
+                    0% { 
+                        box-shadow: 0 0 10px rgba(249, 211, 66, 0.4); 
+                        transform: scale(1.02);
+                    }
+                    50% { 
+                        box-shadow: 0 0 25px rgba(249, 211, 66, 0.8); 
+                        transform: scale(1.03);
+                    }
+                    100% { 
+                        box-shadow: 0 0 10px rgba(249, 211, 66, 0.4); 
+                        transform: scale(1.02);
+                    }
+                }
+                
+                #search-count {
+                    font-weight: bold;
+                    font-size: 0.9rem;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    background: rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                }
+                </style>
+            `;
+            document.head.insertAdjacentHTML('beforeend', css);
         }
-    }, 100);
+    }, 500);
 });
